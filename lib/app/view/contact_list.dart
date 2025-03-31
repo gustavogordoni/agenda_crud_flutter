@@ -1,26 +1,14 @@
-import 'package:agenda_crud/app/database/script.dart';
+import 'package:agenda_crud/app/database/sqlite/connection.dart';
 import 'package:agenda_crud/app/my_app.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ContactList extends StatelessWidget {
 
+  // ESTABELECENDO A CONEXÃO COM O BANCO DE DADOS
   Future<List<Map<String, dynamic>>> _buscar() async {
-    String path = join(await getDatabasesPath(), 'agenda_db');
-    
-    Database db = await openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) async {
-        await db.execute(createTable);
-        await db.execute(insertValues);
-      },
-    );
-
-    List<Map<String, dynamic>> resultado = await db.query('contact');
-
-    return resultado;
+    Database db = await Connection.get();     
+    return db.query('contact');
   }
 
   @override
