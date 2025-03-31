@@ -19,8 +19,6 @@ Este repositório representa meus primeiros passos no desenvolvimento Flutter. M
 - Melhorar minha capacidade de **organização e estruturação de código**
 - Explorar padrões como **injeção de dependência**
 
-Mais do que escrever código, quero aprender e evoluir com cada linha que programo!
-
 ## Ferramentas e Tecnologias utilizadas
 
 - **Flutter**
