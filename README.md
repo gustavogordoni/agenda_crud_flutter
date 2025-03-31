@@ -18,7 +18,6 @@ Este repositório representa meus primeiros passos no desenvolvimento Flutter. M
 - Entender como funciona um **CRUD no Flutter** na prática
 - Melhorar minha capacidade de **organização e estruturação de código**
 - Explorar padrões como **injeção de dependência**
-- Criar um app funcional que possa crescer no futuro
 
 Mais do que escrever código, quero aprender e evoluir com cada linha que programo!
 
