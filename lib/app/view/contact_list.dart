@@ -1,14 +1,12 @@
-import 'package:agenda_crud/app/database/sqlite/connection.dart';
+import 'package:agenda_crud/app/database/sqlite/dao/contact_dao_impl.dart';
+import 'package:agenda_crud/app/domain/entities/contact.dart';
 import 'package:agenda_crud/app/my_app.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 
 class ContactList extends StatelessWidget {
-
   // ESTABELECENDO A CONEXÃO COM O BANCO DE DADOS
-  Future<List<Map<String, dynamic>>> _buscar() async {
-    Database db = await Connection.get();     
-    return db.query('contact');
+  Future<List<Contact>> _buscar() async {
+    return ContactDAOImpl().find();
   }
 
   @override
@@ -18,7 +16,7 @@ class ContactList extends StatelessWidget {
       builder: (context, futuro) {
         // CASO JÁ TENHA CARREGADO OS DADOS
         if (futuro.hasData) {
-          var listaContatos = futuro.data;
+          List<Contact>? listaContatos = futuro.data;
 
           return Scaffold(
             appBar: AppBar(
@@ -37,13 +35,13 @@ class ContactList extends StatelessWidget {
               itemBuilder: (context, index) {
                 var contato = listaContatos[index];
                 var avatar = CircleAvatar(
-                  backgroundImage: NetworkImage(contato['url_avatar']!),
+                  backgroundImage: NetworkImage(contato.urlAvatar),
                 );
 
                 return ListTile(
                   leading: avatar,
-                  title: Text(contato['nome']!),
-                  subtitle: Text(contato['telefone']!),
+                  title: Text(contato.nome),
+                  subtitle: Text(contato.telefone),
 
                   trailing: Container(
                     width: 100,
