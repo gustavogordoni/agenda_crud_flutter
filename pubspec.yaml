@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   sqflite:
   path:
+  get_it:
+
   sqflite_common_ffi: any
   sqlite3_flutter_libs: any
 
