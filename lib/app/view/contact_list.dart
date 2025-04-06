@@ -1,67 +1,111 @@
-import 'package:agenda_crud/app/database/sqlite/dao/contact_dao_impl.dart';
 import 'package:agenda_crud/app/domain/entities/contact.dart';
 import 'package:agenda_crud/app/my_app.dart';
+import 'package:agenda_crud/app/view/contact_list_back.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ContactList extends StatelessWidget {
-  // ESTABELECENDO A CONEXÃO COM O BANCO DE DADOS
-  Future<List<Contact>> _buscar() async {
-    return ContactDAOImpl().find();
+  final _back = ContactListBack();
+
+  // Component circleAvatar
+  CircleAvatar circleAvatar(String url) {
+    try {
+      return CircleAvatar(backgroundImage: NetworkImage(url));
+    } catch (e) {
+      return CircleAvatar(child: Icon(Icons.person));
+    }
+  }
+
+  // Component edit button
+ 
+  Widget iconEditButton(VoidCallback onPressed) {
+    return IconButton(icon: Icon(Icons.edit), color: Colors.orange, onPressed: onPressed);
+  }
+
+  // Component remove button
+  Widget iconRemoveButton(BuildContext context, VoidCallback remove) {
+    return IconButton(
+      icon: Icon(Icons.delete),
+      color: Colors.red,
+      onPressed: () {
+        showDialog(
+          context: context, 
+          builder: (context) => AlertDialog(
+            title: Text('Excluir'),
+            content: Text('Confirma a exclusão?'),
+            actions: [
+              TextButton(
+                child: Text('Não'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              TextButton(
+                child: Text('Sim'),
+                onPressed: remove,
+              ),
+            ],
+          ));
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _buscar(),
-      builder: (context, futuro) {
-        // CASO JÁ TENHA CARREGADO OS DADOS
-        if (futuro.hasData) {
-          List<Contact>? listaContatos = futuro.data;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Lista de Contatos'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).pushNamed(MyApp.CONTACT_FORM);
+            },
+          ),
+        ],
+      ),
+      body: Observer(
+        builder: (context) {
+          return FutureBuilder(
+            future: _back.list,
+            builder: (context, futuro) {
+              if (!futuro.hasData) {
+                // CASO NÃO TENHA CARREGADO OS DADOS
+                return CircularProgressIndicator();
+              } else {
+                // CASO TENHA CARREGADO OS DADOS
+                List<Contact>? listaContatos = futuro.data;
 
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Lista de Contatos'),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(MyApp.CONTACT_FORM);
+                return ListView.builder(
+                  itemCount: listaContatos!.length,
+                  itemBuilder: (context, index) {
+                    var contato = listaContatos[index];
+
+                    return ListTile(
+                      leading: circleAvatar(contato.urlAvatar),
+                      title: Text(contato.nome),
+                      subtitle: Text(contato.telefone),
+
+                      trailing: Container(
+                        width: 100,
+                        child: Row(
+                          children: [
+                            iconEditButton(() {
+                              _back.goToForm(context, contato);
+                            }),
+                            iconRemoveButton(context, () {
+                              _back.remove(contato.id);
+                              Navigator.of(context).pop();
+                            })
+                          ],
+                        ),
+                      ),
+                    );
                   },
-                ),
-              ],
-            ),
-            body: ListView.builder(
-              itemCount: listaContatos!.length,
-              itemBuilder: (context, index) {
-                var contato = listaContatos[index];
-                var avatar = CircleAvatar(
-                  backgroundImage: NetworkImage(contato.urlAvatar),
                 );
-
-                return ListTile(
-                  leading: avatar,
-                  title: Text(contato.nome),
-                  subtitle: Text(contato.telefone),
-
-                  trailing: Container(
-                    width: 100,
-                    child: Row(
-                      children: [
-                        IconButton(icon: Icon(Icons.edit), onPressed: null),
-                        IconButton(icon: Icon(Icons.delete), onPressed: null),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+              }
+            },
           );
-
-          // CASO NÃO TENHA CARREGADO OS DADOS
-        } else {
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
-      },
+        },
+      ),
     );
   }
 }
