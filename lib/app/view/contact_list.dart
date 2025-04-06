@@ -9,17 +9,19 @@ class ContactList extends StatelessWidget {
 
   // Component circleAvatar
   CircleAvatar circleAvatar(String url) {
-    try {
-      return CircleAvatar(backgroundImage: NetworkImage(url));
-    } catch (e) {
-      return CircleAvatar(child: Icon(Icons.person));
-    }
+    return (Uri.tryParse(url)!.isAbsolute)
+        ? CircleAvatar(backgroundImage: NetworkImage(url))
+        : CircleAvatar(child: Icon(Icons.person));
   }
 
   // Component edit button
- 
+
   Widget iconEditButton(VoidCallback onPressed) {
-    return IconButton(icon: Icon(Icons.edit), color: Colors.orange, onPressed: onPressed);
+    return IconButton(
+      icon: Icon(Icons.edit),
+      color: Colors.orange,
+      onPressed: onPressed,
+    );
   }
 
   // Component remove button
@@ -29,21 +31,20 @@ class ContactList extends StatelessWidget {
       color: Colors.red,
       onPressed: () {
         showDialog(
-          context: context, 
-          builder: (context) => AlertDialog(
-            title: Text('Excluir'),
-            content: Text('Confirma a exclusão?'),
-            actions: [
-              TextButton(
-                child: Text('Não'),
-                onPressed: () => Navigator.of(context).pop(),
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                title: Text('Excluir'),
+                content: Text('Confirma a exclusão?'),
+                actions: [
+                  TextButton(
+                    child: Text('Não'),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  TextButton(child: Text('Sim'), onPressed: remove),
+                ],
               ),
-              TextButton(
-                child: Text('Sim'),
-                onPressed: remove,
-              ),
-            ],
-          ));
+        );
       },
     );
   }
@@ -94,7 +95,7 @@ class ContactList extends StatelessWidget {
                             iconRemoveButton(context, () {
                               _back.remove(contato.id);
                               Navigator.of(context).pop();
-                            })
+                            }),
                           ],
                         ),
                       ),
