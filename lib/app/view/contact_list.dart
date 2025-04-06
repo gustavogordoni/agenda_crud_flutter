@@ -70,7 +70,7 @@ class ContactList extends StatelessWidget {
             builder: (context, futuro) {
               if (!futuro.hasData) {
                 // CASO NÃO TENHA CARREGADO OS DADOS
-                return CircularProgressIndicator();
+                return Scaffold(body: Center(child: CircularProgressIndicator()));
               } else {
                 // CASO TENHA CARREGADO OS DADOS
                 List<Contact>? listaContatos = futuro.data;
