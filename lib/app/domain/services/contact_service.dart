@@ -4,17 +4,16 @@ import 'package:agenda_crud/app/domain/interfaces/contact_dao.dart';
 import 'package:get_it/get_it.dart';
 
 class ContactService {
-  
   var _dao = GetIt.I.get<ContactDAO>();
 
-  save(Contact contact) {
-    validateNome(contact.nome);
+  Future<void> save(Contact contact) async {
+    validateName(contact.nome);
     validateEmail(contact.email);
     validatePhone(contact.telefone);
-    _dao.save(contact);
+    await _dao.save(contact);
   }
 
-  remove(int id){
+  remove(int id) {
     _dao.remove(id);
   }
 
@@ -23,34 +22,40 @@ class ContactService {
   }
 
   // VALIDAÇÕES NA CAMADA DE DOMÍNIO
-  validateNome(String name){
+  validateName(String name) {
     var min = 3;
     var max = 50;
 
-    if(name == null){
+    if (name == null) {
       throw new DomainLayerException('O nome é obrigatório.');
-    }else if(name.length < min){
-      throw new DomainLayerException('O nome deve ter pelo menos $min caracteres.');
-    }else if(name.length > max){
-      throw new DomainLayerException('O nome deve ter no máximo $max caracteres.');
+    } else if (name.length < min) {
+      throw new DomainLayerException(
+        'O nome deve ter pelo menos $min caracteres.',
+      );
+    } else if (name.length > max) {
+      throw new DomainLayerException(
+        'O nome deve ter no máximo $max caracteres.',
+      );
     }
   }
 
-  validateEmail(String email){
-    if(email == null){
+  validateEmail(String email) {
+    if (email == null) {
       throw new DomainLayerException('O e-mail é obrigatório.');
-    }else if(!email.contains('@')){
+    } else if (!email.contains('@')) {
       throw new DomainLayerException('O e-mail deve conter um @.');
     }
   }
 
-  validatePhone(String phone){
-    var format = RegExp(r'^\([0-9]{2}\) [9] [6-9]{1}[0-9]{3}\-[0-9]{4}$');
+  validatePhone(String phone) {
+    var format = RegExp(r'^\([0-9]{2}\) [0-9] [0-9]{4}\-[0-9]{4}$');
 
-    if(phone == null){
+    if (phone == null) {
       throw new DomainLayerException('O telefone é obrigatório.');
-    }else if(!format.hasMatch(phone)){
-      throw new DomainLayerException('O telefone deve estar no formato (99) 9 9999-9999.');
+    } else if (!format.hasMatch(phone)) {
+      throw new DomainLayerException(
+        'O telefone deve estar no formato (99) 9 9999-9999.',
+      );
     }
   }
 }

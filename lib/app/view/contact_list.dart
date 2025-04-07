@@ -1,5 +1,4 @@
 import 'package:agenda_crud/app/domain/entities/contact.dart';
-import 'package:agenda_crud/app/my_app.dart';
 import 'package:agenda_crud/app/view/contact_list_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -58,7 +57,7 @@ class ContactList extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              Navigator.of(context).pushNamed(MyApp.CONTACT_FORM);
+              _back.goToForm(context);
             },
           ),
         ],
@@ -70,7 +69,9 @@ class ContactList extends StatelessWidget {
             builder: (context, futuro) {
               if (!futuro.hasData) {
                 // CASO NÃO TENHA CARREGADO OS DADOS
-                return Scaffold(body: Center(child: CircularProgressIndicator()));
+                return Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                );
               } else {
                 // CASO TENHA CARREGADO OS DADOS
                 List<Contact>? listaContatos = futuro.data;
@@ -93,7 +94,7 @@ class ContactList extends StatelessWidget {
                               _back.goToForm(context, contato);
                             }),
                             iconRemoveButton(context, () {
-                              _back.remove(contato.id);
+                              _back.remove(contato.id!);
                               Navigator.of(context).pop();
                             }),
                           ],
