@@ -36,6 +36,7 @@ dependencies:
   mobx:
   flutter_mobx:
   mask_text_input_formatter:
+  url_launcher:
 
   sqflite_common_ffi: any
   sqlite3_flutter_libs: any
