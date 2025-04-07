@@ -38,7 +38,7 @@ abstract class _ContactListBack with Store {
   }
 
   // Método para excluir um contato
-  remove(int id) {
+  remove(dynamic id) {
     _service.remove(id);
     refreshList();
   }

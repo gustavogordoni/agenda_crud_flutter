@@ -13,7 +13,7 @@ class ContactService {
     await _dao.save(contact);
   }
 
-  remove(int id) {
+  remove(dynamic id) {
     _dao.remove(id);
   }
 
