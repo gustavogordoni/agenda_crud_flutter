@@ -39,8 +39,8 @@ public class ContactREST {
         }   
     }
 
-    @DeleteMapping
-    public void delete(@RequestBody Contact contact) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         repository.delete(contact);
     }
     
