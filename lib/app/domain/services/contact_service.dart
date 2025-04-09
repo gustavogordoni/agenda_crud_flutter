@@ -17,8 +17,8 @@ class ContactService {
     _dao.remove(id);
   }
 
-  Future<List<Contact>> find() {
-    return _dao.find();
+  Future<List<Contact>> find() async{
+    return await _dao.find();
   }
 
   // VALIDAÇÕES NA CAMADA DE DOMÍNIO
