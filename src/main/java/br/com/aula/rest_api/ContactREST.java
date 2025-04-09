@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import br.com.aula.rest_api.database.RepositoryContact;
 import br.com.aula.rest_api.entity.Contact;
@@ -41,7 +42,7 @@ public class ContactREST {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        repository.delete(contact);
+        repository.deleteById(id);
     }
     
 }
