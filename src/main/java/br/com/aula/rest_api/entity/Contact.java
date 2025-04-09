@@ -1,5 +1,4 @@
-
-package br.com.aula.rest_api.entidade;
+package br.com.aula.rest_api.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
