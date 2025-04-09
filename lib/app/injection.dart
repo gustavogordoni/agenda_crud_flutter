@@ -11,10 +11,10 @@ setupInjection() {
   // getIt.registerFactory<ContactDAO>(ContactDAOImpl());
 
   // Injeção de Dependência do SqLite
-  // getIt.registerSingleton<ContactDAO>(ContactDAOImpl());
+  getIt.registerSingleton<ContactDAO>(ContactDAOImpl());
 
   // Injeção de Dependência do Firestore
-  getIt.registerSingleton<ContactDAO>(ContactDAOFirestore());
+  // getIt.registerSingleton<ContactDAO>(ContactDAOFirestore());
 
   getIt.registerSingleton<ContactService>(ContactService());
 
